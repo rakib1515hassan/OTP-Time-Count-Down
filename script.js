@@ -1,37 +1,5 @@
-// // বাক্সে যে এলিমেন্ট আছে সেটা রিট্রিভ করা
-// const startButton = document.getElementById('startButton');
-// const timerDisplay = document.getElementById('timer');
-
-// let countdown; // টাইমার ভেরিয়েবল সেট করবে
-
-// // কাউন্টডাউন শুরু করার জন্য ফাংশন
-// function startCountdown() {
-//     const startTime = Date.now();
-//     const targetTime = startTime + 1 * 60 * 1000; // 5 মিনিটের মিলিসেকেন্ড
-
-//     countdown = setInterval(() => {
-//         const currentTime = Date.now();
-//         const remainingTime = targetTime - currentTime;
-
-//         if (remainingTime <= 0) {
-//             clearInterval(countdown);
-//             timerDisplay.textContent = '0:00';
-//             return;
-//         }
-
-//         const minutes = Math.floor(remainingTime / 60000);
-//         const seconds = Math.floor((remainingTime % 60000) / 1000);
-
-//         timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-//     }, 1000); // 1 সেকেন্ড মিলিসেকেন্ড
-// }
-
-// // বাটনে ক্লিক ইভেন্ট লিস্টেনার যোগ করা
-// startButton.addEventListener('click', startCountdown);
-
-
-const startButton = document.getElementById('startButton');
-const resetButton = document.getElementById('resetButton');
+const SendOTP = document.getElementById('SendOTP');
+const ResendOTP = document.getElementById('ResendOTP');
 const timerDisplay = document.getElementById('timer');
 
 let countdown;
@@ -48,7 +16,7 @@ function startCountdown() {
     if (!countdownStarted) {
         countdownStarted = true;
         const currentTime = Date.now();
-        targetTime = currentTime + 5 * 60 * 1000; // 5 মিনিটের মিলিসেকেন্ড
+        targetTime = currentTime + 3 * 60 * 1000; // 3 মিনিটের মিলিসেকেন্ড
     }
 
     clearInterval(countdown); // আগের টাইমার বন্ধ করুন
@@ -68,13 +36,28 @@ function startCountdown() {
 }
 
 function resetCountdown() {
-    console.log("Resete...")
+    countdownStarted = true;
+    updateTimerDisplay(3 * 60 * 1000); // পুনরায় 5 মিনিট সেট করুন
+    const restTime = Date.now();
+    targetTime = restTime + 3 * 60 * 1000;
+  
     clearInterval(countdown);
-    updateTimerDisplay(5 * 60 * 1000); // পুনরায় 5 মিনিট সেট করুন
-    targetTime = 0;
-    countdownStarted = false;
-}
+    countdown = setInterval(() => {
+      const remainingTime = targetTime - Date.now();
+  
+      if (remainingTime <= 0) {
+        clearInterval(countdown);
+        updateTimerDisplay(0);
+        countdownStarted = false;
+        return;
+      }
+  
+      updateTimerDisplay(remainingTime);
+    }, 1000);
+  }
 
-startButton.addEventListener('click', startCountdown);
-resetButton.addEventListener('click', resetCountdown);
+SendOTP.addEventListener('click', startCountdown);
+ResendOTP.addEventListener('click', resetCountdown);
+
+
 
